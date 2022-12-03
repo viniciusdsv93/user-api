@@ -50,10 +50,19 @@ const makeSut = (): SutTypes => {
 };
 
 describe("Create User Usecase", () => {
-	test("Should call AddUserRepository with the correct values", () => {
+	test("Should call AddUserRepository with the correct values", async () => {
 		const { sut, addUserRepositoryStub } = makeSut();
 		const addUserRepositorySpy = jest.spyOn(addUserRepositoryStub, "add");
-		sut.create(makeFakeCreateUserModel());
+		await sut.create(makeFakeCreateUserModel());
 		expect(addUserRepositorySpy).toHaveBeenCalledWith(makeFakeCreateUserModel());
+	});
+
+	test("Should throw if AddUserRepository throws", async () => {
+		const { sut, addUserRepositoryStub } = makeSut();
+		jest.spyOn(addUserRepositoryStub, "add").mockReturnValueOnce(
+			new Promise((resolve, reject) => reject(new Error()))
+		);
+		const promise = sut.create(makeFakeCreateUserModel());
+		await expect(promise).rejects.toThrow();
 	});
 });
