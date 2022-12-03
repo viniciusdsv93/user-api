@@ -152,10 +152,10 @@ describe("Create User Controller", () => {
 		);
 	});
 
-	test("Should call CreateUser usecase with correct values", async () => {
+	test("Should call CreateUser usecase with the correct values", async () => {
 		const { sut, createUserStub } = makeSut();
 		const createUserSpy = jest.spyOn(createUserStub, "create");
 		await sut.handle(makeFakeRequest());
-		expect(createUserSpy).toHaveBeenCalledWith(makeFakeRequest());
+		expect(createUserSpy).toHaveBeenCalledWith(makeFakeRequest().body);
 	});
 });
