@@ -9,13 +9,13 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(uuid())
-  nome      String
-  CPF       String    @unique
-  email     String    @unique
-  telefone  String
-  sexo      String
-  dataNasc  DateTime
+  id              String    @id @default(uuid())
+  nome            String
+  CPF             String    @unique
+  email           String    @unique
+  telefone        String
+  sexo            String
+  dataNascimento  DateTime
 
   @@map("usuarios")
 }
