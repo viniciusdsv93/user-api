@@ -44,4 +44,18 @@ describe("Create User Controller", () => {
 		});
 		expect(httpResponse).toEqual(badRequest(new MissingParamError("email")));
 	});
+
+	test("Should return 400 if no telephone is provided", async () => {
+		const sut = new CreateUserController();
+		const httpResponse = await sut.handle({
+			body: {
+				nome: "nome_valido",
+				CPF: "CPF_valido",
+				email: "email_valido",
+				sexo: "Masculino",
+				dataNascimento: "15/10/1980",
+			},
+		});
+		expect(httpResponse).toEqual(badRequest(new MissingParamError("telefone")));
+	});
 });
