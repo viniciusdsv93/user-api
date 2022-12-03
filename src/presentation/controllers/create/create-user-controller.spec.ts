@@ -16,4 +16,18 @@ describe("Create User Controller", () => {
 		});
 		expect(httpResponse).toEqual(badRequest(new MissingParamError("nome")));
 	});
+
+	test("Should return 400 if no CPF is provided", async () => {
+		const sut = new CreateUserController();
+		const httpResponse = await sut.handle({
+			body: {
+				nome: "nome_valido",
+				email: "email_valido",
+				telefone: "telefone_valido",
+				sexo: "Masculino",
+				dataNascimento: "15/10/1980",
+			},
+		});
+		expect(httpResponse).toEqual(badRequest(new MissingParamError("CPF")));
+	});
 });
