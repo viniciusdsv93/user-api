@@ -72,4 +72,18 @@ describe("Create User Controller", () => {
 		});
 		expect(httpResponse).toEqual(badRequest(new MissingParamError("sexo")));
 	});
+
+	test("Should return 400 if no birthday is provided", async () => {
+		const sut = new CreateUserController();
+		const httpResponse = await sut.handle({
+			body: {
+				nome: "nome_valido",
+				CPF: "CPF_valido",
+				email: "email_valido",
+				telefone: "telefone_valido",
+				sexo: "Masculino",
+			},
+		});
+		expect(httpResponse).toEqual(badRequest(new MissingParamError("dataNascimento")));
+	});
 });
