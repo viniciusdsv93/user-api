@@ -65,4 +65,17 @@ describe("Create User Usecase", () => {
 		const promise = sut.create(makeFakeCreateUserModel());
 		await expect(promise).rejects.toThrow();
 	});
+
+	test("Should return an UserModel on AddUserRepository success", async () => {
+		const { sut } = makeSut();
+		const result = await sut.create(makeFakeCreateUserModel());
+		expect(result).toBeTruthy();
+		expect(result).toHaveProperty("id", "id_valido");
+		expect(result).toHaveProperty("nome", "nome_valido");
+		expect(result).toHaveProperty("CPF", "CPF_valido");
+		expect(result).toHaveProperty("email", "email_valido");
+		expect(result).toHaveProperty("telefone", "telefone_valido");
+		expect(result).toHaveProperty("sexo", "Masculino");
+		expect(result).toHaveProperty("dataNascimento", "15/10/1980");
+	});
 });
