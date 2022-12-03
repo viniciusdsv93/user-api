@@ -1,3 +1,4 @@
+import { InvalidParamError } from "../errors/invalid-param-error";
 import { MissingParamError } from "../errors/missing-param-error";
 import { badRequest } from "../helpers/http";
 import { CreateUserController } from "./create-user-controller";
@@ -85,5 +86,22 @@ describe("Create User Controller", () => {
 			},
 		});
 		expect(httpResponse).toEqual(badRequest(new MissingParamError("dataNascimento")));
+	});
+
+	test("Should return 400 if an invalid gender is provided", async () => {
+		const sut = new CreateUserController();
+		const httpResponse = await sut.handle({
+			body: {
+				nome: "nome_valido",
+				CPF: "CPF_valido",
+				email: "email_valido",
+				telefone: "telefone_valido",
+				sexo: "sexo_invalido",
+				dataNascimento: "15/10/1980",
+			},
+		});
+		expect(httpResponse).toEqual(
+			badRequest(new InvalidParamError("sexo", "O sexo informado é inválido"))
+		);
 	});
 });
