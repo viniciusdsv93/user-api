@@ -10,15 +10,7 @@ export class CreateUser implements ICreateUser {
 	}
 
 	async create(createUserData: CreateUserModel): Promise<UserModel> {
-		await this.addUserRepository.add(createUserData);
-		return {
-			id: "",
-			nome: "",
-			CPF: "",
-			email: "",
-			telefone: "",
-			sexo: "Masculino",
-			dataNascimento: "",
-		};
+		const result = await this.addUserRepository.add(createUserData);
+		return result;
 	}
 }
