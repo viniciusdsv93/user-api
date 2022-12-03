@@ -2,7 +2,7 @@ import { UserModel } from "../../../domain/models/user";
 import { CreateUserModel, ICreateUser } from "../../../domain/usecases/create-user";
 import { InvalidParamError } from "../errors/invalid-param-error";
 import { MissingParamError } from "../errors/missing-param-error";
-import { badRequest } from "../helpers/http";
+import { badRequest, serverError } from "../helpers/http";
 import { HttpRequest } from "../protocols/http";
 import { CreateUserController } from "./create-user-controller";
 
@@ -150,6 +150,15 @@ describe("Create User Controller", () => {
 		expect(httpResponse).toEqual(
 			badRequest(new InvalidParamError("sexo", "O sexo informado é inválido"))
 		);
+	});
+
+	test("Should return 500 if CreateUser usecase throws", async () => {
+		const { sut, createUserStub } = makeSut();
+		jest.spyOn(createUserStub, "create").mockReturnValueOnce(
+			new Promise((resolve, reject) => reject(new Error()))
+		);
+		const httpResponse = await sut.handle(makeFakeRequest());
+		expect(httpResponse).toEqual(serverError(new Error()));
 	});
 
 	test("Should call CreateUser usecase with the correct values", async () => {
