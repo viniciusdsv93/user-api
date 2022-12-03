@@ -31,7 +31,7 @@ describe("Create User Controller", () => {
 		expect(httpResponse).toEqual(badRequest(new MissingParamError("CPF")));
 	});
 
-	test("Should return 400 if no CPF is provided", async () => {
+	test("Should return 400 if no email is provided", async () => {
 		const sut = new CreateUserController();
 		const httpResponse = await sut.handle({
 			body: {
