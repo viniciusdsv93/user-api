@@ -23,6 +23,8 @@ export class DeleteUserController implements IController {
 			);
 		}
 
+		await this.deleteUser.delete(httpRequest.params.email);
+
 		return ok("");
 	}
 }
