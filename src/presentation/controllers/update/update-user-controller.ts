@@ -57,6 +57,17 @@ export class UpdateUserController implements IController {
 			);
 		}
 
+		const { nome, CPF, email, telefone, sexo, dataNascimento } = httpRequest.body;
+
+		await this.updateUser.update(httpRequest.params.email, {
+			nome,
+			CPF,
+			email,
+			telefone,
+			sexo,
+			dataNascimento,
+		});
+
 		return ok("");
 	}
 }
