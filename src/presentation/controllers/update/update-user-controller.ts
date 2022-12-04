@@ -51,6 +51,12 @@ export class UpdateUserController implements IController {
 			);
 		}
 
+		if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(httpRequest.body.email)) {
+			return badRequest(
+				new InvalidParamError("email", "O email informado é inválido")
+			);
+		}
+
 		return ok("");
 	}
 }
