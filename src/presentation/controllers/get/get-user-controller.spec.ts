@@ -2,7 +2,7 @@ import { UserModel } from "../../../domain/models/user";
 import { IGetUser } from "../../../domain/usecases/get-user";
 import { InvalidParamError } from "../../errors/invalid-param-error";
 import { MissingParamError } from "../../errors/missing-param-error";
-import { badRequest, ok, serverError } from "../../helpers/http";
+import { badRequest, notFound, ok, serverError } from "../../helpers/http";
 import { GetUserController } from "./get-user-controller";
 
 const makeGetUserStub = (): IGetUser => {
@@ -83,6 +83,15 @@ describe("Get User Controller", () => {
 		);
 		const httpResponse = await sut.handle(makeFakeEmailRequest());
 		expect(httpResponse).toEqual(serverError(new Error()));
+	});
+
+	test("Should return 404 if GetUser usecase returns null", async () => {
+		const { sut, getUserStub } = makeSut();
+		jest.spyOn(getUserStub, "get").mockReturnValueOnce(
+			new Promise((resolve) => resolve(null))
+		);
+		const httpResponse = await sut.handle(makeFakeEmailRequest());
+		expect(httpResponse).toEqual(notFound());
 	});
 
 	test("Should return 200 on GetUser usecase success", async () => {
