@@ -2,6 +2,7 @@ import { UserModel } from "../../../domain/models/user";
 import { CreateUserModel } from "../../../domain/usecases/create-user";
 import { IUpdateUser } from "../../../domain/usecases/update-user";
 import { IFindUserByEmailRepository } from "../../protocols/find-by-email-repository";
+import { IUpdateUserRepository } from "../../protocols/update-user-repository";
 import { UpdateUser } from "./update-user";
 
 const makeFindUserByEmailRepositoryStub = (): IFindUserByEmailRepository => {
@@ -13,6 +14,15 @@ const makeFindUserByEmailRepositoryStub = (): IFindUserByEmailRepository => {
 	return new FindUserByEmailRepositoryStub();
 };
 
+const makeUpdateUserRepositoryStub = (): IUpdateUserRepository => {
+	class UpdateUserRepositoryStub implements IUpdateUserRepository {
+		async update(email: string, createUserData: CreateUserModel): Promise<UserModel> {
+			return new Promise((resolve) => resolve(makeFakeUserModelAfterUpdate()));
+		}
+	}
+	return new UpdateUserRepositoryStub();
+};
+
 const makeFakeUserModel = (): UserModel => {
 	return {
 		id: "id_valido",
@@ -22,6 +32,18 @@ const makeFakeUserModel = (): UserModel => {
 		telefone: "telefone_valido",
 		sexo: "Masculino",
 		dataNascimento: new Date(1980, 10 - 1, 15),
+	};
+};
+
+const makeFakeUserModelAfterUpdate = (): UserModel => {
+	return {
+		id: "id_valido",
+		nome: "nome_alterado",
+		CPF: "CPF_alterado",
+		email: "email_alterado@mail.com",
+		telefone: "telefone_alterado",
+		sexo: "Outro",
+		dataNascimento: new Date(1985, 10 - 1, 15),
 	};
 };
 
@@ -39,14 +61,17 @@ const makeFakeUpdateUserModel = (): CreateUserModel => {
 type SutTypes = {
 	sut: IUpdateUser;
 	findUserByEmailRepositoryStub: IFindUserByEmailRepository;
+	updateUserRepositoryStub: IUpdateUserRepository;
 };
 
 const makeSut = (): SutTypes => {
 	const findUserByEmailRepositoryStub = makeFindUserByEmailRepositoryStub();
-	const sut = new UpdateUser(findUserByEmailRepositoryStub);
+	const updateUserRepositoryStub = makeUpdateUserRepositoryStub();
+	const sut = new UpdateUser(findUserByEmailRepositoryStub, updateUserRepositoryStub);
 	return {
 		sut,
 		findUserByEmailRepositoryStub,
+		updateUserRepositoryStub,
 	};
 };
 
@@ -72,12 +97,15 @@ describe("Update User Usecase", () => {
 		await expect(promise).rejects.toThrow();
 	});
 
-	// test("Should call DeleteUserRepository with correct email", async () => {
-	// 	const { sut, deleteUserRepositoryStub } = makeSut();
-	// 	const deleteUserRepositorySpy = jest.spyOn(deleteUserRepositoryStub, "delete");
-	// 	await sut.delete("email_valido@mail.com");
-	// 	expect(deleteUserRepositorySpy).toHaveBeenCalledWith("email_valido@mail.com");
-	// });
+	test("Should call UpdateUserRepository with correct values", async () => {
+		const { sut, updateUserRepositoryStub } = makeSut();
+		const updateUserRepositorySpy = jest.spyOn(updateUserRepositoryStub, "update");
+		await sut.update("email_valido@mail.com", makeFakeUpdateUserModel());
+		expect(updateUserRepositorySpy).toHaveBeenCalledWith(
+			"email_valido@mail.com",
+			makeFakeUpdateUserModel()
+		);
+	});
 
 	// test("Should throw if DeleteUserRepository throws", async () => {
 	// 	const { sut, deleteUserRepositoryStub } = makeSut();
