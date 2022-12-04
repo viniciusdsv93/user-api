@@ -1,5 +1,17 @@
+import { CreateUserModel } from "../../../../domain/usecases/create-user";
 import { prismaClient } from "../prisma/prisma-client";
 import { UsersPrismaRepository } from "./users-repository";
+
+const makeFakeCreateUserModel = (): CreateUserModel => {
+	return {
+		nome: "Jorge",
+		CPF: "44444444444",
+		email: "jorge@mail.com",
+		telefone: "44444444",
+		sexo: "Masculino",
+		dataNascimento: "15/10/1980",
+	};
+};
 
 describe("Prisma Users Repository", () => {
 	afterEach(async () => {
@@ -8,14 +20,7 @@ describe("Prisma Users Repository", () => {
 
 	test("Should return an user on add success", async () => {
 		const sut = new UsersPrismaRepository();
-		const response = await sut.add({
-			nome: "Jorge",
-			CPF: "44444444444",
-			email: "jorge@mail.com",
-			telefone: "44444444",
-			sexo: "Masculino",
-			dataNascimento: "15/10/1980",
-		});
+		const response = await sut.add(makeFakeCreateUserModel());
 		expect(response).toBeTruthy();
 		expect(response).toHaveProperty("id");
 		expect(response).toHaveProperty("nome", "Jorge");
@@ -28,14 +33,7 @@ describe("Prisma Users Repository", () => {
 
 	test("Should return an user on findByEmail success", async () => {
 		const sut = new UsersPrismaRepository();
-		await sut.add({
-			nome: "Jorge",
-			CPF: "44444444444",
-			email: "jorge@mail.com",
-			telefone: "44444444",
-			sexo: "Masculino",
-			dataNascimento: "15/10/1980",
-		});
+		await sut.add(makeFakeCreateUserModel());
 		const result = await sut.findByEmail("jorge@mail.com");
 		expect(result).toBeTruthy();
 		expect(result).toHaveProperty("id");
