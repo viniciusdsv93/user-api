@@ -130,6 +130,9 @@ describe("Update User Controller", () => {
 	test("Should return 400 if no email is provided", async () => {
 		const { sut } = makeSut();
 		const httpResponse = await sut.handle({
+			params: {
+				email: "email_valido@mail.com",
+			},
 			body: {
 				nome: "nome_alterado",
 				CPF: "CPF_alterado",
@@ -141,19 +144,22 @@ describe("Update User Controller", () => {
 		expect(httpResponse).toEqual(badRequest(new MissingParamError("email")));
 	});
 
-	// test("Should return 400 if no telephone is provided", async () => {
-	// 	const { sut } = makeSut();
-	// 	const httpResponse = await sut.handle({
-	// 		body: {
-	// 			nome: "nome_valido",
-	// 			CPF: "CPF_valido",
-	// 			email: "email_valido@mail.com",
-	// 			sexo: "Masculino",
-	// 			dataNascimento: "15/10/1980",
-	// 		},
-	// 	});
-	// 	expect(httpResponse).toEqual(badRequest(new MissingParamError("telefone")));
-	// });
+	test("Should return 400 if no telephone is provided", async () => {
+		const { sut } = makeSut();
+		const httpResponse = await sut.handle({
+			params: {
+				email: "email_valido@mail.com",
+			},
+			body: {
+				nome: "nome_alterado",
+				CPF: "CPF_alterado",
+				email: "email_alterado@mail.com",
+				sexo: "Outro",
+				dataNascimento: "15/10/1985",
+			},
+		});
+		expect(httpResponse).toEqual(badRequest(new MissingParamError("telefone")));
+	});
 
 	// test("Should return 400 if no gender is provided", async () => {
 	// 	const { sut } = makeSut();
