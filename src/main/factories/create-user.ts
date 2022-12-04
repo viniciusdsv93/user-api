@@ -1,4 +1,4 @@
-import { CreateUser } from "../../application/usecases/create-user";
+import { CreateUser } from "../../application/usecases/create-user/create-user";
 import { UsersPrismaRepository } from "../../infra/database/postgres/users-repository/users-repository";
 import { CreateUserController } from "../../presentation/controllers/create/create-user-controller";
 import { IController } from "../../presentation/protocols/controller";

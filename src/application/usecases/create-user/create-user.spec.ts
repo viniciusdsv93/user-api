@@ -1,8 +1,8 @@
-import { UserModel } from "../../domain/models/user";
-import { CreateUserModel } from "../../domain/usecases/create-user";
-import { IAddUserRepository } from "../protocols/add-user-respository";
-import { IFindUserByCPFRepository } from "../protocols/find-by-cpf-repository";
-import { IFindUserByEmailRepository } from "../protocols/find-by-email-repository";
+import { UserModel } from "../../../domain/models/user";
+import { CreateUserModel } from "../../../domain/usecases/create-user";
+import { IAddUserRepository } from "../../protocols/add-user-respository";
+import { IFindUserByCPFRepository } from "../../protocols/find-by-cpf-repository";
+import { IFindUserByEmailRepository } from "../../protocols/find-by-email-repository";
 import { CreateUser } from "./create-user";
 
 const makeFakeCreateUserModel = (): CreateUserModel => {
