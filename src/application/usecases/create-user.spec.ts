@@ -1,6 +1,7 @@
 import { UserModel } from "../../domain/models/user";
 import { CreateUserModel } from "../../domain/usecases/create-user";
 import { IAddUserRepository } from "../protocols/add-user-respository";
+import { IFindUserByCPFRepository } from "../protocols/find-by-cpf-repository";
 import { IFindUserByEmailRepository } from "../protocols/find-by-email-repository";
 import { CreateUser } from "./create-user";
 
@@ -45,20 +46,36 @@ const makeFindUserByEmailRepositoryStub = (): IFindUserByEmailRepository => {
 	return new FindUserByEmailRepositoryStub();
 };
 
+const makeFindUserByCPFRepositoryStub = (): IFindUserByCPFRepository => {
+	class FindUserByCPFRepositoryStub implements IFindUserByCPFRepository {
+		async findByCPF(cpf: string): Promise<UserModel | null> {
+			return new Promise((resolve) => resolve(null));
+		}
+	}
+	return new FindUserByCPFRepositoryStub();
+};
+
 type SutTypes = {
 	sut: CreateUser;
 	addUserRepositoryStub: IAddUserRepository;
 	findUserByEmailRepositoryStub: IFindUserByEmailRepository;
+	findUserByCPFRepositoryStub: IFindUserByCPFRepository;
 };
 
 const makeSut = (): SutTypes => {
 	const addUserRepositoryStub = makeAddUserRepositoryStub();
 	const findUserByEmailRepositoryStub = makeFindUserByEmailRepositoryStub();
-	const sut = new CreateUser(addUserRepositoryStub, findUserByEmailRepositoryStub);
+	const findUserByCPFRepositoryStub = makeFindUserByCPFRepositoryStub();
+	const sut = new CreateUser(
+		addUserRepositoryStub,
+		findUserByEmailRepositoryStub,
+		findUserByCPFRepositoryStub
+	);
 	return {
 		sut,
 		addUserRepositoryStub,
 		findUserByEmailRepositoryStub,
+		findUserByCPFRepositoryStub,
 	};
 };
 
@@ -82,6 +99,16 @@ describe("Create User Usecase", () => {
 		);
 		const promise = sut.create(makeFakeCreateUserModel());
 		await expect(promise).rejects.toThrow();
+	});
+
+	test("Should call FindUserByCPF with the correct cpf", async () => {
+		const { sut, findUserByCPFRepositoryStub } = makeSut();
+		const findUserByCPFRepositorySpy = jest.spyOn(
+			findUserByCPFRepositoryStub,
+			"findByCPF"
+		);
+		await sut.create(makeFakeCreateUserModel());
+		expect(findUserByCPFRepositorySpy).toHaveBeenCalledWith("CPF_valido");
 	});
 
 	test("Should call AddUserRepository with the correct values", async () => {
