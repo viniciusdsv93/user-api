@@ -77,4 +77,13 @@ describe("Delete User Controller", () => {
 		await sut.handle(makeFakeEmailRequest());
 		expect(deleteUserSpy).toHaveBeenCalledWith("email_valido@mail.com");
 	});
+
+	test("Should return 500 if DeleteUser usecase throws", async () => {
+		const { sut, deleteUserStub } = makeSut();
+		jest.spyOn(deleteUserStub, "delete").mockReturnValueOnce(
+			new Promise((resolve, reject) => reject(new Error()))
+		);
+		const httpResponse = await sut.handle(makeFakeEmailRequest());
+		expect(httpResponse).toEqual(serverError(new Error()));
+	});
 });
