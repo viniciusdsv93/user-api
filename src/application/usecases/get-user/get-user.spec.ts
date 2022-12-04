@@ -1,6 +1,16 @@
 import { UserModel } from "../../../domain/models/user";
+import { IGetUser } from "../../../domain/usecases/get-user";
 import { IFindUserByEmailRepository } from "../../protocols/find-by-email-repository";
 import { GetUser } from "./get-user";
+
+const makeFindUserByEmailRepositoryStub = (): IFindUserByEmailRepository => {
+	class FindUserByEmailRepositoryStub implements IFindUserByEmailRepository {
+		async findByEmail(email: string): Promise<UserModel | null> {
+			return new Promise((resolve) => resolve(makeFakeUserModel()));
+		}
+	}
+	return new FindUserByEmailRepositoryStub();
+};
 
 const makeFakeUserModel = (): UserModel => {
 	return {
@@ -14,15 +24,23 @@ const makeFakeUserModel = (): UserModel => {
 	};
 };
 
+type SutTypes = {
+	sut: IGetUser;
+	findUserByEmailRepositoryStub: IFindUserByEmailRepository;
+};
+
+const makeSut = (): SutTypes => {
+	const findUserByEmailRepositoryStub = makeFindUserByEmailRepositoryStub();
+	const sut = new GetUser(findUserByEmailRepositoryStub);
+	return {
+		sut,
+		findUserByEmailRepositoryStub,
+	};
+};
+
 describe("Get User Usecase", () => {
 	test("Should call FindUserByEmailRepository with correct email", async () => {
-		class FindUserByEmailRepositoryStub implements IFindUserByEmailRepository {
-			async findByEmail(email: string): Promise<UserModel | null> {
-				return new Promise((resolve) => resolve(makeFakeUserModel()));
-			}
-		}
-		const findUserByEmailRepositoryStub = new FindUserByEmailRepositoryStub();
-		const sut = new GetUser(findUserByEmailRepositoryStub);
+		const { sut, findUserByEmailRepositoryStub } = makeSut();
 		const findUserByEmailRepositorySpy = jest.spyOn(
 			findUserByEmailRepositoryStub,
 			"findByEmail"
