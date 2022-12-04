@@ -2,6 +2,7 @@ import { IAddUserRepository } from "../../../../application/protocols/add-user-r
 import { IDeleteUserRepository } from "../../../../application/protocols/delete-user-repository";
 import { IFindUserByCPFRepository } from "../../../../application/protocols/find-by-cpf-repository";
 import { IFindUserByEmailRepository } from "../../../../application/protocols/find-by-email-repository";
+import { IUpdateUserRepository } from "../../../../application/protocols/update-user-repository";
 import { UserModel } from "../../../../domain/models/user";
 import { CreateUserModel } from "../../../../domain/usecases/create-user";
 import { prismaClient } from "../prisma/prisma-client";
@@ -11,7 +12,8 @@ export class UsersPrismaRepository
 		IAddUserRepository,
 		IFindUserByEmailRepository,
 		IFindUserByCPFRepository,
-		IDeleteUserRepository
+		IDeleteUserRepository,
+		IUpdateUserRepository
 {
 	async add(createUserData: CreateUserModel): Promise<UserModel> {
 		const { nome, CPF, email, telefone, sexo, dataNascimento } = createUserData;
@@ -49,6 +51,26 @@ export class UsersPrismaRepository
 		await prismaClient.user.delete({
 			where: {
 				email: email,
+			},
+		});
+	}
+
+	async update(
+		paramsEmail: string,
+		createUserData: CreateUserModel
+	): Promise<UserModel> {
+		const { nome, CPF, email, telefone, sexo, dataNascimento } = createUserData;
+		return await prismaClient.user.update({
+			where: {
+				email: paramsEmail,
+			},
+			data: {
+				nome,
+				CPF,
+				email,
+				telefone,
+				sexo,
+				dataNascimento,
 			},
 		});
 	}
