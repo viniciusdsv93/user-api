@@ -59,15 +59,15 @@ describe("Delete User Controller", () => {
 		expect(httpResponse).toEqual(badRequest(new MissingParamError("email")));
 	});
 
-	// test("Should return 400 if an invalid email is provided", async () => {
-	// 	const { sut } = makeSut();
-	// 	const httpResponse = await sut.handle({
-	// 		params: {
-	// 			email: "email_invalido",
-	// 		},
-	// 	});
-	// 	expect(httpResponse).toEqual(
-	// 		badRequest(new InvalidParamError("email", "O email informado é inválido"))
-	// 	);
-	// });
+	test("Should return 400 if an invalid email is provided", async () => {
+		const { sut } = makeSut();
+		const httpResponse = await sut.handle({
+			params: {
+				email: "email_invalido",
+			},
+		});
+		expect(httpResponse).toEqual(
+			badRequest(new InvalidParamError("email", "O email informado é inválido"))
+		);
+	});
 });
