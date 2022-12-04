@@ -25,6 +25,6 @@ export const created = (data: any): HttpResponse => {
 export const serverError = (error: Error): HttpResponse => {
 	return {
 		statusCode: 500,
-		body: new ServerError(error.stack as string),
+		body: error,
 	};
 };
