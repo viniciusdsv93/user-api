@@ -220,22 +220,25 @@ describe("Update User Controller", () => {
 		);
 	});
 
-	// test("Should return 400 if an invalid email is provided", async () => {
-	// 	const { sut } = makeSut();
-	// 	const httpResponse = await sut.handle({
-	// 		body: {
-	// 			nome: "nome_valido",
-	// 			CPF: "CPF_valido",
-	// 			email: "email_invalido",
-	// 			telefone: "telefone_valido",
-	// 			sexo: "Masculino",
-	// 			dataNascimento: "15/10/1980",
-	// 		},
-	// 	});
-	// 	expect(httpResponse).toEqual(
-	// 		badRequest(new InvalidParamError("email", "O email informado é inválido"))
-	// 	);
-	// });
+	test("Should return 400 if an invalid email is provided on body", async () => {
+		const { sut } = makeSut();
+		const httpResponse = await sut.handle({
+			params: {
+				email: "email_valido@mail.com",
+			},
+			body: {
+				nome: "nome_alterado",
+				CPF: "CPF_alterado",
+				email: "email_invalido",
+				telefone: "telefone_alterado",
+				sexo: "Outro",
+				dataNascimento: "15/10/1985",
+			},
+		});
+		expect(httpResponse).toEqual(
+			badRequest(new InvalidParamError("email", "O email informado é inválido"))
+		);
+	});
 
 	// test("Should call UpdateUser usecase with correct values", async () => {
 	// 	const { sut, updateUserStub } = makeSut();
