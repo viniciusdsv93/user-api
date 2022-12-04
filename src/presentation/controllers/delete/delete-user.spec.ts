@@ -70,4 +70,11 @@ describe("Delete User Controller", () => {
 			badRequest(new InvalidParamError("email", "O email informado é inválido"))
 		);
 	});
+
+	test("Should call DeleteUser usecase with correct email", async () => {
+		const { sut, deleteUserStub } = makeSut();
+		const deleteUserSpy = jest.spyOn(deleteUserStub, "delete");
+		await sut.handle(makeFakeEmailRequest());
+		expect(deleteUserSpy).toHaveBeenCalledWith("email_valido@mail.com");
+	});
 });
