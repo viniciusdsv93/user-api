@@ -1,7 +1,7 @@
 import { IGetUser } from "../../../domain/usecases/get-user";
 import { InvalidParamError } from "../../errors/invalid-param-error";
 import { MissingParamError } from "../../errors/missing-param-error";
-import { badRequest, ok } from "../../helpers/http";
+import { badRequest, ok, serverError } from "../../helpers/http";
 import { IController } from "../../protocols/controller";
 import { HttpRequest, HttpResponse } from "../../protocols/http";
 
@@ -13,22 +13,26 @@ export class GetUserController implements IController {
 	}
 
 	async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
-		if (!httpRequest.params?.email) {
-			return badRequest(new MissingParamError("email"));
+		try {
+			if (!httpRequest.params?.email) {
+				return badRequest(new MissingParamError("email"));
+			}
+
+			if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(httpRequest.params.email)) {
+				return badRequest(
+					new InvalidParamError("email", "O email informado é inválido")
+				);
+			}
+
+			const foundUser = await this.getUser.get(httpRequest.params.email);
+
+			if (foundUser) {
+				return ok(foundUser);
+			}
+
+			return ok("");
+		} catch (error) {
+			return serverError(error as Error);
 		}
-
-		if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(httpRequest.params.email)) {
-			return badRequest(
-				new InvalidParamError("email", "O email informado é inválido")
-			);
-		}
-
-		const foundUser = await this.getUser.get(httpRequest.params.email);
-
-		if (foundUser) {
-			return ok(foundUser);
-		}
-
-		return ok("");
 	}
 }
