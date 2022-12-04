@@ -178,19 +178,22 @@ describe("Update User Controller", () => {
 		expect(httpResponse).toEqual(badRequest(new MissingParamError("sexo")));
 	});
 
-	// test("Should return 400 if no birthday is provided", async () => {
-	// 	const { sut } = makeSut();
-	// 	const httpResponse = await sut.handle({
-	// 		body: {
-	// 			nome: "nome_valido",
-	// 			CPF: "CPF_valido",
-	// 			email: "email_valido@mail.com",
-	// 			telefone: "telefone_valido",
-	// 			sexo: "Masculino",
-	// 		},
-	// 	});
-	// 	expect(httpResponse).toEqual(badRequest(new MissingParamError("dataNascimento")));
-	// });
+	test("Should return 400 if no birthday is provided", async () => {
+		const { sut } = makeSut();
+		const httpResponse = await sut.handle({
+			params: {
+				email: "email_valido@mail.com",
+			},
+			body: {
+				nome: "nome_alterado",
+				CPF: "CPF_alterado",
+				email: "email_alterado@mail.com",
+				telefone: "telefone_alterado",
+				sexo: "Outro",
+			},
+		});
+		expect(httpResponse).toEqual(badRequest(new MissingParamError("dataNascimento")));
+	});
 
 	// test("Should return 400 if an invalid gender is provided", async () => {
 	// 	const { sut } = makeSut();
