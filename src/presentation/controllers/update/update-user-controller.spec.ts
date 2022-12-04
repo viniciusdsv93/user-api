@@ -195,27 +195,30 @@ describe("Update User Controller", () => {
 		expect(httpResponse).toEqual(badRequest(new MissingParamError("dataNascimento")));
 	});
 
-	// test("Should return 400 if an invalid gender is provided", async () => {
-	// 	const { sut } = makeSut();
-	// 	const httpResponse = await sut.handle({
-	// 		body: {
-	// 			nome: "nome_valido",
-	// 			CPF: "CPF_valido",
-	// 			email: "email_valido@mail.com",
-	// 			telefone: "telefone_valido",
-	// 			sexo: "sexo_invalido",
-	// 			dataNascimento: "15/10/1980",
-	// 		},
-	// 	});
-	// 	expect(httpResponse).toEqual(
-	// 		badRequest(
-	// 			new InvalidParamError(
-	// 				"sexo",
-	// 				"O sexo informado é inválido. As opções são: Masculino, Feminino ou Outro"
-	// 			)
-	// 		)
-	// 	);
-	// });
+	test("Should return 400 if an invalid gender is provided", async () => {
+		const { sut } = makeSut();
+		const httpResponse = await sut.handle({
+			params: {
+				email: "email_valido@mail.com",
+			},
+			body: {
+				nome: "nome_alterado",
+				CPF: "CPF_alterado",
+				email: "email_alterado@mail.com",
+				telefone: "telefone_alterado",
+				sexo: "sexo_invalido",
+				dataNascimento: "15/10/1985",
+			},
+		});
+		expect(httpResponse).toEqual(
+			badRequest(
+				new InvalidParamError(
+					"sexo",
+					"O sexo informado é inválido. As opções são: Masculino, Feminino ou Outro"
+				)
+			)
+		);
+	});
 
 	// test("Should return 400 if an invalid email is provided", async () => {
 	// 	const { sut } = makeSut();
