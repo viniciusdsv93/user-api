@@ -2,7 +2,7 @@ import { UserModel } from "../../../domain/models/user";
 import { CreateUserModel, ICreateUser } from "../../../domain/usecases/create-user";
 import { InvalidParamError } from "../../errors/invalid-param-error";
 import { MissingParamError } from "../../errors/missing-param-error";
-import { badRequest, serverError } from "../../helpers/http";
+import { badRequest, created, serverError } from "../../helpers/http";
 import { HttpRequest } from "../../protocols/http";
 import { CreateUserController } from "./create-user-controller";
 
@@ -148,7 +148,12 @@ describe("Create User Controller", () => {
 			},
 		});
 		expect(httpResponse).toEqual(
-			badRequest(new InvalidParamError("sexo", "O sexo informado é inválido"))
+			badRequest(
+				new InvalidParamError(
+					"sexo",
+					"O sexo informado é inválido. As opções são: Masculino, Feminino ou Outro"
+				)
+			)
 		);
 	});
 
@@ -166,5 +171,11 @@ describe("Create User Controller", () => {
 		const createUserSpy = jest.spyOn(createUserStub, "create");
 		await sut.handle(makeFakeRequest());
 		expect(createUserSpy).toHaveBeenCalledWith(makeFakeRequest().body);
+	});
+
+	test("Should return an user model on success", async () => {
+		const { sut } = makeSut();
+		const httpResponse = await sut.handle(makeFakeRequest());
+		expect(httpResponse).toEqual(created(makeFakeUserModel()));
 	});
 });
