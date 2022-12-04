@@ -23,6 +23,21 @@ export class UpdateUserController implements IController {
 			);
 		}
 
+		const requiredFields = [
+			"nome",
+			"CPF",
+			"email",
+			"telefone",
+			"sexo",
+			"dataNascimento",
+		];
+
+		for (const field of requiredFields) {
+			if (!httpRequest.body[field]) {
+				return badRequest(new MissingParamError(field));
+			}
+		}
+
 		return ok("");
 	}
 }
