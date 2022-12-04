@@ -5,6 +5,12 @@ import { IController } from "../../presentation/protocols/controller";
 
 export const makeCreateUserController = (): IController => {
 	const usersPrismaRepository = new UsersPrismaRepository();
-	const createUser = new CreateUser(usersPrismaRepository);
+	const findUserByEmailRepository = new UsersPrismaRepository();
+	const findUserByCPFRepository = new UsersPrismaRepository();
+	const createUser = new CreateUser(
+		usersPrismaRepository,
+		findUserByEmailRepository,
+		findUserByCPFRepository
+	);
 	return new CreateUserController(createUser);
 };
