@@ -28,3 +28,10 @@ export const serverError = (error: Error): HttpResponse => {
 		body: error,
 	};
 };
+
+export const notFound = (): HttpResponse => {
+	return {
+		statusCode: 404,
+		body: "Não foi encontrado nenhum usuário com o email informado",
+	};
+};
