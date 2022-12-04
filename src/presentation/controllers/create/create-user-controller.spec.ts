@@ -1,9 +1,9 @@
 import { UserModel } from "../../../domain/models/user";
 import { CreateUserModel, ICreateUser } from "../../../domain/usecases/create-user";
-import { InvalidParamError } from "../errors/invalid-param-error";
-import { MissingParamError } from "../errors/missing-param-error";
-import { badRequest, serverError } from "../helpers/http";
-import { HttpRequest } from "../protocols/http";
+import { InvalidParamError } from "../../errors/invalid-param-error";
+import { MissingParamError } from "../../errors/missing-param-error";
+import { badRequest, serverError } from "../../helpers/http";
+import { HttpRequest } from "../../protocols/http";
 import { CreateUserController } from "./create-user-controller";
 
 const makeFakeRequest = (): HttpRequest => {
@@ -27,7 +27,7 @@ const makeFakeUserModel = (): UserModel => {
 		email: "email_valido",
 		telefone: "telefone_valido",
 		sexo: "Masculino",
-		dataNascimento: "15/10/1980",
+		dataNascimento: new Date(1980, 10 - 1, 15),
 	};
 };
 

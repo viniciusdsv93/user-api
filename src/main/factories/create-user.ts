@@ -1,7 +1,7 @@
 import { CreateUser } from "../../application/usecases/create-user";
 import { UsersPrismaRepository } from "../../infra/database/postgres/users-repository/users-repository";
 import { CreateUserController } from "../../presentation/controllers/create/create-user-controller";
-import { IController } from "../../presentation/controllers/protocols/controller";
+import { IController } from "../../presentation/protocols/controller";
 
 export const makeCreateUserController = (): IController => {
 	const usersPrismaRepository = new UsersPrismaRepository();

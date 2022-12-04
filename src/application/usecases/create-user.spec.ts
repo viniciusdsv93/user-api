@@ -22,7 +22,7 @@ const makeFakeUserModel = (): UserModel => {
 		email: "email_valido",
 		telefone: "telefone_valido",
 		sexo: "Masculino",
-		dataNascimento: "15/10/1980",
+		dataNascimento: new Date(1980, 10 - 1, 15),
 	};
 };
 
@@ -76,6 +76,6 @@ describe("Create User Usecase", () => {
 		expect(result).toHaveProperty("email", "email_valido");
 		expect(result).toHaveProperty("telefone", "telefone_valido");
 		expect(result).toHaveProperty("sexo", "Masculino");
-		expect(result).toHaveProperty("dataNascimento", "15/10/1980");
+		expect(result).toHaveProperty("dataNascimento");
 	});
 });

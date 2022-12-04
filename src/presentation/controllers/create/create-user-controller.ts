@@ -1,9 +1,9 @@
 import { ICreateUser } from "../../../domain/usecases/create-user";
-import { InvalidParamError } from "../errors/invalid-param-error";
-import { MissingParamError } from "../errors/missing-param-error";
-import { badRequest, ok, serverError } from "../helpers/http";
-import { IController } from "../protocols/controller";
-import { HttpRequest, HttpResponse } from "../protocols/http";
+import { InvalidParamError } from "../../errors/invalid-param-error";
+import { MissingParamError } from "../../errors/missing-param-error";
+import { badRequest, ok, serverError } from "../../helpers/http";
+import { IController } from "../../protocols/controller";
+import { HttpRequest, HttpResponse } from "../../protocols/http";
 
 export class CreateUserController implements IController {
 	private readonly createUser: ICreateUser;
