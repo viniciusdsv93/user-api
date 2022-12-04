@@ -70,4 +70,17 @@ describe("Prisma Users Repository", () => {
 		const result = await sut.findByCPF("44444444444");
 		expect(result).toBeNull();
 	});
+
+	test("Should throw on delete failure", async () => {
+		const sut = new UsersPrismaRepository();
+		const promise = sut.delete("jorge@mail.com");
+		await expect(promise).rejects.toThrow();
+	});
+
+	// test("Should not throw on delete success", async () => {
+	// 	const sut = new UsersPrismaRepository();
+	// 	await sut.add(makeFakeCreateUserModel());
+	// 	await sut.delete("jorge@mail.com");
+	// 	expect(sut.delete).not.toThrow();
+	// });
 });
