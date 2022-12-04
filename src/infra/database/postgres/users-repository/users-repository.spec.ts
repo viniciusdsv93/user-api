@@ -50,4 +50,18 @@ describe("Prisma Users Repository", () => {
 		const result = await sut.findByEmail("jorge@mail.com");
 		expect(result).toBeNull();
 	});
+
+	test("Should return an user on findByCPF success", async () => {
+		const sut = new UsersPrismaRepository();
+		await sut.add(makeFakeCreateUserModel());
+		const result = await sut.findByCPF("44444444444");
+		expect(result).toBeTruthy();
+		expect(result).toHaveProperty("id");
+		expect(result).toHaveProperty("nome", "Jorge");
+		expect(result).toHaveProperty("CPF", "44444444444");
+		expect(result).toHaveProperty("email", "jorge@mail.com");
+		expect(result).toHaveProperty("telefone", "44444444");
+		expect(result).toHaveProperty("sexo", "Masculino");
+		expect(result).toHaveProperty("dataNascimento", new Date(1980, 10 - 1, 15));
+	});
 });
