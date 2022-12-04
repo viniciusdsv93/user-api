@@ -1,7 +1,7 @@
 import { IUpdateUser } from "../../../domain/usecases/update-user";
 import { InvalidParamError } from "../../errors/invalid-param-error";
 import { MissingParamError } from "../../errors/missing-param-error";
-import { badRequest, ok, serverError } from "../../helpers/http";
+import { badRequest, noContent, ok, serverError } from "../../helpers/http";
 import { IController } from "../../protocols/controller";
 import { HttpRequest, HttpResponse } from "../../protocols/http";
 
@@ -69,7 +69,7 @@ export class UpdateUserController implements IController {
 				dataNascimento,
 			});
 
-			return ok("");
+			return noContent();
 		} catch (error) {
 			return serverError(error as Error);
 		}
