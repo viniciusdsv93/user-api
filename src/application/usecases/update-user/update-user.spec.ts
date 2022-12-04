@@ -115,4 +115,20 @@ describe("Update User Usecase", () => {
 		const promise = sut.update("email_valido@mail.com", makeFakeUpdateUserModel());
 		await expect(promise).rejects.toThrow();
 	});
+
+	test("Should return updated user data on success", async () => {
+		const { sut } = makeSut();
+		const result = await sut.update(
+			"email_valido@mail.com",
+			makeFakeUpdateUserModel()
+		);
+		expect(result).toBeTruthy();
+		expect(result).toHaveProperty("id", "id_valido");
+		expect(result).toHaveProperty("nome", "nome_alterado");
+		expect(result).toHaveProperty("CPF", "CPF_alterado");
+		expect(result).toHaveProperty("email", "email_alterado@mail.com");
+		expect(result).toHaveProperty("telefone", "telefone_alterado");
+		expect(result).toHaveProperty("sexo", "Outro");
+		expect(result).toHaveProperty("dataNascimento");
+	});
 });
