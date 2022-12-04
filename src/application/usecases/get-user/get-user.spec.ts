@@ -68,4 +68,17 @@ describe("Get User Usecase", () => {
 		const result = await sut.get("email_valido@mail.com");
 		expect(result).toBeNull();
 	});
+
+	test("Should return an user if FindUserByEmailRepository succeeds", async () => {
+		const { sut } = makeSut();
+		const result = await sut.get("email_valido@mail.com");
+		expect(result).toBeTruthy();
+		expect(result).toHaveProperty("id", "id_valido");
+		expect(result).toHaveProperty("nome", "nome_valido");
+		expect(result).toHaveProperty("CPF", "CPF_valido");
+		expect(result).toHaveProperty("email", "email_valido@mail.com");
+		expect(result).toHaveProperty("telefone", "telefone_valido");
+		expect(result).toHaveProperty("sexo", "Masculino");
+		expect(result).toHaveProperty("dataNascimento");
+	});
 });
