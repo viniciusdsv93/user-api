@@ -16,7 +16,14 @@ export class CreateUser implements ICreateUser {
 	}
 
 	async create(createUserData: CreateUserModel): Promise<UserModel> {
-		await this.findUserByEmailRepository.findByEmail(createUserData.email);
+		const userExistsWithEmail = await this.findUserByEmailRepository.findByEmail(
+			createUserData.email
+		);
+
+		if (userExistsWithEmail) {
+			throw new Error("Já existe um usuário cadastrado com este email");
+		}
+
 		const result = await this.addUserRepository.add(createUserData);
 		return result;
 	}
