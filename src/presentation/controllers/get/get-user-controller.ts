@@ -1,6 +1,7 @@
 import { IGetUser } from "../../../domain/usecases/get-user";
 import { InvalidParamError } from "../../errors/invalid-param-error";
 import { MissingParamError } from "../../errors/missing-param-error";
+import { NotFoundError } from "../../errors/not-found-error";
 import { badRequest, notFound, ok, serverError } from "../../helpers/http";
 import { IController } from "../../protocols/controller";
 import { HttpRequest, HttpResponse } from "../../protocols/http";
@@ -30,7 +31,12 @@ export class GetUserController implements IController {
 				return ok(foundUser);
 			}
 
-			return notFound();
+			return notFound(
+				new NotFoundError(
+					"email",
+					"Não foi encontrado nenhum usuário com o email informado"
+				)
+			);
 		} catch (error) {
 			return serverError(error as Error);
 		}

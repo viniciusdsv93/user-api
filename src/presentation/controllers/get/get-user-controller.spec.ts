@@ -2,6 +2,7 @@ import { UserModel } from "../../../domain/models/user";
 import { IGetUser } from "../../../domain/usecases/get-user";
 import { InvalidParamError } from "../../errors/invalid-param-error";
 import { MissingParamError } from "../../errors/missing-param-error";
+import { NotFoundError } from "../../errors/not-found-error";
 import { badRequest, notFound, ok, serverError } from "../../helpers/http";
 import { GetUserController } from "./get-user-controller";
 
@@ -91,7 +92,14 @@ describe("Get User Controller", () => {
 			new Promise((resolve) => resolve(null))
 		);
 		const httpResponse = await sut.handle(makeFakeEmailRequest());
-		expect(httpResponse).toEqual(notFound());
+		expect(httpResponse).toEqual(
+			notFound(
+				new NotFoundError(
+					"email",
+					"Não foi encontrado nenhum usuário com o email informado"
+				)
+			)
+		);
 	});
 
 	test("Should return 200 on GetUser usecase success", async () => {

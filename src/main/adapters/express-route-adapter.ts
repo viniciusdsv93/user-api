@@ -6,6 +6,7 @@ export const expressAdaptRoute = (controller: IController) => {
 	return async (req: Request, res: Response) => {
 		const httpRequest: HttpRequest = {
 			body: req.body,
+			params: req.params,
 		};
 		const httpResponse: HttpResponse = await controller.handle(httpRequest);
 		if (httpResponse.statusCode === 200 || httpResponse.statusCode === 201) {

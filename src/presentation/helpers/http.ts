@@ -29,9 +29,9 @@ export const serverError = (error: Error): HttpResponse => {
 	};
 };
 
-export const notFound = (): HttpResponse => {
+export const notFound = (error: Error): HttpResponse => {
 	return {
 		statusCode: 404,
-		body: "Não foi encontrado nenhum usuário com o email informado",
+		body: error,
 	};
 };

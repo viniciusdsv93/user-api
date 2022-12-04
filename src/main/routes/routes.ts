@@ -6,6 +6,6 @@ import { makeGetUserController } from "../factories/get-user";
 const router = Router();
 
 router.post("/create", expressAdaptRoute(makeCreateUserController()));
-router.get("/get", expressAdaptRoute(makeGetUserController()));
+router.get("/get/:email", expressAdaptRoute(makeGetUserController()));
 
 export { router };
