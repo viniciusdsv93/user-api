@@ -5,5 +5,5 @@ export type UserModel = {
 	email: string;
 	telefone: string;
 	sexo: "Masculino" | "Feminino" | "Outro";
-	dataNascimento: string;
+	dataNascimento: Date;
 };
