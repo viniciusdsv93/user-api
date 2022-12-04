@@ -30,10 +30,18 @@ const makeFakeUserModelAfterUpdate = (): UserModel => {
 	};
 };
 
-const makeFakeEmailRequest = () => {
+const makeFakeUpdateRequest = () => {
 	return {
 		params: {
 			email: "email_valido@mail.com",
+		},
+		body: {
+			nome: "nome_alterado",
+			CPF: "CPF_alterado",
+			email: "email_alterado@mail.com",
+			telefone: "telefone_alterado",
+			sexo: "Outro",
+			dataNascimento: "15/10/1985",
 		},
 	};
 };
@@ -73,7 +81,7 @@ describe("Update User Controller", () => {
 		expect(httpResponse).toEqual(badRequest(new MissingParamError("email")));
 	});
 
-	test("Should return 400 if an invalid email is provided", async () => {
+	test("Should return 400 if an invalid email is provided on params", async () => {
 		const { sut } = makeSut();
 		const httpResponse = await sut.handle({
 			params: {
@@ -85,11 +93,144 @@ describe("Update User Controller", () => {
 		);
 	});
 
-	// test("Should call DeleteUser usecase with correct email", async () => {
-	// 	const { sut, deleteUserStub } = makeSut();
-	// 	const deleteUserSpy = jest.spyOn(deleteUserStub, "delete");
-	// 	await sut.handle(makeFakeEmailRequest());
-	// 	expect(deleteUserSpy).toHaveBeenCalledWith("email_valido@mail.com");
+	test("Should return 400 if no name is provided", async () => {
+		const { sut } = makeSut();
+		const httpResponse = await sut.handle({
+			params: {
+				email: "email_valido@mail.com",
+			},
+			body: {
+				CPF: "CPF_alterado",
+				email: "email_alterado@mail.com",
+				telefone: "telefone_alterado",
+				sexo: "Outro",
+				dataNascimento: "15/10/1985",
+			},
+		});
+		expect(httpResponse).toEqual(badRequest(new MissingParamError("nome")));
+	});
+
+	// test("Should return 400 if no CPF is provided", async () => {
+	// 	const { sut } = makeSut();
+	// 	const httpResponse = await sut.handle({
+	// 		body: {
+	// 			nome: "nome_valido",
+	// 			email: "email_valido@mail.com",
+	// 			telefone: "telefone_valido",
+	// 			sexo: "Masculino",
+	// 			dataNascimento: "15/10/1980",
+	// 		},
+	// 	});
+	// 	expect(httpResponse).toEqual(badRequest(new MissingParamError("CPF")));
+	// });
+
+	// test("Should return 400 if no email is provided", async () => {
+	// 	const { sut } = makeSut();
+	// 	const httpResponse = await sut.handle({
+	// 		body: {
+	// 			nome: "nome_valido",
+	// 			CPF: "CPF_valido",
+	// 			telefone: "telefone_valido",
+	// 			sexo: "Masculino",
+	// 			dataNascimento: "15/10/1980",
+	// 		},
+	// 	});
+	// 	expect(httpResponse).toEqual(badRequest(new MissingParamError("email")));
+	// });
+
+	// test("Should return 400 if no telephone is provided", async () => {
+	// 	const { sut } = makeSut();
+	// 	const httpResponse = await sut.handle({
+	// 		body: {
+	// 			nome: "nome_valido",
+	// 			CPF: "CPF_valido",
+	// 			email: "email_valido@mail.com",
+	// 			sexo: "Masculino",
+	// 			dataNascimento: "15/10/1980",
+	// 		},
+	// 	});
+	// 	expect(httpResponse).toEqual(badRequest(new MissingParamError("telefone")));
+	// });
+
+	// test("Should return 400 if no gender is provided", async () => {
+	// 	const { sut } = makeSut();
+	// 	const httpResponse = await sut.handle({
+	// 		body: {
+	// 			nome: "nome_valido",
+	// 			CPF: "CPF_valido",
+	// 			email: "email_valido@mail.com",
+	// 			telefone: "telefone_valido",
+	// 			dataNascimento: "15/10/1980",
+	// 		},
+	// 	});
+	// 	expect(httpResponse).toEqual(badRequest(new MissingParamError("sexo")));
+	// });
+
+	// test("Should return 400 if no birthday is provided", async () => {
+	// 	const { sut } = makeSut();
+	// 	const httpResponse = await sut.handle({
+	// 		body: {
+	// 			nome: "nome_valido",
+	// 			CPF: "CPF_valido",
+	// 			email: "email_valido@mail.com",
+	// 			telefone: "telefone_valido",
+	// 			sexo: "Masculino",
+	// 		},
+	// 	});
+	// 	expect(httpResponse).toEqual(badRequest(new MissingParamError("dataNascimento")));
+	// });
+
+	// test("Should return 400 if an invalid gender is provided", async () => {
+	// 	const { sut } = makeSut();
+	// 	const httpResponse = await sut.handle({
+	// 		body: {
+	// 			nome: "nome_valido",
+	// 			CPF: "CPF_valido",
+	// 			email: "email_valido@mail.com",
+	// 			telefone: "telefone_valido",
+	// 			sexo: "sexo_invalido",
+	// 			dataNascimento: "15/10/1980",
+	// 		},
+	// 	});
+	// 	expect(httpResponse).toEqual(
+	// 		badRequest(
+	// 			new InvalidParamError(
+	// 				"sexo",
+	// 				"O sexo informado é inválido. As opções são: Masculino, Feminino ou Outro"
+	// 			)
+	// 		)
+	// 	);
+	// });
+
+	// test("Should return 400 if an invalid email is provided", async () => {
+	// 	const { sut } = makeSut();
+	// 	const httpResponse = await sut.handle({
+	// 		body: {
+	// 			nome: "nome_valido",
+	// 			CPF: "CPF_valido",
+	// 			email: "email_invalido",
+	// 			telefone: "telefone_valido",
+	// 			sexo: "Masculino",
+	// 			dataNascimento: "15/10/1980",
+	// 		},
+	// 	});
+	// 	expect(httpResponse).toEqual(
+	// 		badRequest(new InvalidParamError("email", "O email informado é inválido"))
+	// 	);
+	// });
+
+	// test("Should call UpdateUser usecase with correct values", async () => {
+	// 	const { sut, updateUserStub } = makeSut();
+	// 	const updateUserSpy = jest.spyOn(updateUserStub, "update");
+	// 	await sut.handle(makeFakeUpdateRequest());
+	// 	expect(updateUserSpy).toHaveBeenCalledWith("email_valido@mail.com", {
+	// 		nome: "nome_alterado",
+	// 		CPF: "CPF_alterado",
+	// 		email: "email_alterado@mail.com",
+	// 		telefone: "telefone_alterado",
+	// 		sexo: "Outro",
+	// 		dataNascimento: "15/10/1985",
+	// 	});
 	// });
 
 	// test("Should return 500 if DeleteUser usecase throws", async () => {
