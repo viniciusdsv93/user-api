@@ -77,10 +77,13 @@ describe("Prisma Users Repository", () => {
 		await expect(promise).rejects.toThrow();
 	});
 
-	// test("Should not throw on delete success", async () => {
-	// 	const sut = new UsersPrismaRepository();
-	// 	await sut.add(makeFakeCreateUserModel());
-	// 	await sut.delete("jorge@mail.com");
-	// 	expect(sut.delete).not.toThrow();
-	// });
+	test("Should not find user by email after delete success", async () => {
+		const sut = new UsersPrismaRepository();
+		await sut.add(makeFakeCreateUserModel());
+		const resultBeforeDelete = await sut.findByEmail("jorge@mail.com");
+		expect(resultBeforeDelete).toBeTruthy();
+		await sut.delete("jorge@mail.com");
+		const resultAfterDelete = await sut.findByEmail("jorge@mail.com");
+		expect(resultAfterDelete).toBeNull();
+	});
 });
