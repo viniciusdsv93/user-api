@@ -1,9 +1,12 @@
 import { IAddUserRepository } from "../../../../application/protocols/add-user-respository";
+import { IFindUserByEmailRepository } from "../../../../application/protocols/find-by-email-repository";
 import { UserModel } from "../../../../domain/models/user";
 import { CreateUserModel } from "../../../../domain/usecases/create-user";
 import { prismaClient } from "../prisma/prisma-client";
 
-export class UsersPrismaRepository implements IAddUserRepository {
+export class UsersPrismaRepository
+	implements IAddUserRepository, IFindUserByEmailRepository
+{
 	async add(createUserData: CreateUserModel): Promise<UserModel> {
 		const { nome, CPF, email, telefone, sexo, dataNascimento } = createUserData;
 		const [day, month, year] = dataNascimento.split("/");
@@ -16,6 +19,14 @@ export class UsersPrismaRepository implements IAddUserRepository {
 				telefone,
 				sexo,
 				dataNascimento: formattedDate,
+			},
+		});
+	}
+
+	async findByEmail(email: string): Promise<UserModel | null> {
+		return await prismaClient.user.findUnique({
+			where: {
+				email,
 			},
 		});
 	}
