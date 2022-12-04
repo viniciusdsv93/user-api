@@ -4,7 +4,7 @@ import { IGetUser } from "../../../domain/usecases/get-user";
 import { InvalidParamError } from "../../errors/invalid-param-error";
 import { MissingParamError } from "../../errors/missing-param-error";
 import { NotFoundError } from "../../errors/not-found-error";
-import { badRequest, notFound, ok, serverError } from "../../helpers/http";
+import { badRequest, noContent, notFound, ok, serverError } from "../../helpers/http";
 import { DeleteUserController } from "./delete-user";
 
 const makeDeleteUserStub = (): IDeleteUser => {
@@ -85,5 +85,11 @@ describe("Delete User Controller", () => {
 		);
 		const httpResponse = await sut.handle(makeFakeEmailRequest());
 		expect(httpResponse).toEqual(serverError(new Error()));
+	});
+
+	test("Should return 204 if DeleteUser usecase succeeds", async () => {
+		const { sut } = makeSut();
+		const httpResponse = await sut.handle(makeFakeEmailRequest());
+		expect(httpResponse).toEqual(noContent());
 	});
 });
