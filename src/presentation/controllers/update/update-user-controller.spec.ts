@@ -254,14 +254,14 @@ describe("Update User Controller", () => {
 		});
 	});
 
-	// test("Should return 500 if DeleteUser usecase throws", async () => {
-	// 	const { sut, deleteUserStub } = makeSut();
-	// 	jest.spyOn(deleteUserStub, "delete").mockReturnValueOnce(
-	// 		new Promise((resolve, reject) => reject(new Error()))
-	// 	);
-	// 	const httpResponse = await sut.handle(makeFakeEmailRequest());
-	// 	expect(httpResponse).toEqual(serverError(new Error()));
-	// });
+	test("Should return 500 if UpdateUser usecase throws", async () => {
+		const { sut, updateUserStub } = makeSut();
+		jest.spyOn(updateUserStub, "update").mockReturnValueOnce(
+			new Promise((resolve, reject) => reject(new Error()))
+		);
+		const httpResponse = await sut.handle(makeFakeUpdateRequest());
+		expect(httpResponse).toEqual(serverError(new Error()));
+	});
 
 	// test("Should return 204 if DeleteUser usecase succeeds", async () => {
 	// 	const { sut } = makeSut();
