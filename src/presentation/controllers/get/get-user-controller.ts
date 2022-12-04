@@ -23,7 +23,11 @@ export class GetUserController implements IController {
 			);
 		}
 
-		await this.getUser.get(httpRequest.params.email);
+		const foundUser = await this.getUser.get(httpRequest.params.email);
+
+		if (foundUser) {
+			return ok(foundUser);
+		}
 
 		return ok("");
 	}
