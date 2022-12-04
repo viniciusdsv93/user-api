@@ -35,3 +35,9 @@ export const notFound = (error: Error): HttpResponse => {
 		body: error,
 	};
 };
+
+export const noContent = (): HttpResponse => {
+	return {
+		statusCode: 204,
+	};
+};
