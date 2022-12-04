@@ -99,4 +99,25 @@ describe("Prisma Users Repository", () => {
 		});
 		await expect(promise).rejects.toThrow();
 	});
+
+	test("Should return update user data on update success", async () => {
+		const sut = new UsersPrismaRepository();
+		await sut.add(makeFakeCreateUserModel());
+		const result = await sut.update("jorge@mail.com", {
+			nome: "Jorge Alterado",
+			CPF: "55555555555",
+			email: "jorge_alterado@mail.com",
+			telefone: "55555555",
+			sexo: "Outro",
+			dataNascimento: "15/10/1985",
+		});
+		expect(result).toBeTruthy();
+		expect(result).toHaveProperty("id");
+		expect(result).toHaveProperty("nome", "Jorge Alterado");
+		expect(result).toHaveProperty("CPF", "55555555555");
+		expect(result).toHaveProperty("email", "jorge_alterado@mail.com");
+		expect(result).toHaveProperty("telefone", "55555555");
+		expect(result).toHaveProperty("sexo", "Outro");
+		expect(result).toHaveProperty("dataNascimento", new Date(1985, 10 - 1, 15));
+	});
 });
