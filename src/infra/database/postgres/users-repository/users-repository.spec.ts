@@ -1,6 +1,11 @@
+import { prismaClient } from "../prisma/prisma-client";
 import { UsersPrismaRepository } from "./users-repository";
 
 describe("Prisma Users Repository", () => {
+	afterAll(async () => {
+		await prismaClient.user.deleteMany();
+	});
+
 	test("Should return an user on add success", async () => {
 		const sut = new UsersPrismaRepository();
 		const response = await sut.add({
