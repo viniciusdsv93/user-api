@@ -39,7 +39,7 @@ const makeAddUserRepositoryStub = (): IAddUserRepository => {
 const makeFindUserByEmailRepositoryStub = (): IFindUserByEmailRepository => {
 	class FindUserByEmailRepositoryStub implements IFindUserByEmailRepository {
 		async findByEmail(email: string): Promise<UserModel | null> {
-			return new Promise((resolve) => resolve(makeFakeUserModel()));
+			return new Promise((resolve) => resolve(null));
 		}
 	}
 	return new FindUserByEmailRepositoryStub();
@@ -73,6 +73,15 @@ describe("Create User Usecase", () => {
 		expect(findUserByEmailRepositorySpy).toHaveBeenCalledWith(
 			"email_valido@mail.com"
 		);
+	});
+
+	test("Should throw if FindUserByEmail finds an user", async () => {
+		const { sut, findUserByEmailRepositoryStub } = makeSut();
+		jest.spyOn(findUserByEmailRepositoryStub, "findByEmail").mockReturnValueOnce(
+			new Promise((resolve) => resolve(makeFakeUserModel()))
+		);
+		const promise = sut.create(makeFakeCreateUserModel());
+		await expect(promise).rejects.toThrow();
 	});
 
 	test("Should call AddUserRepository with the correct values", async () => {
