@@ -63,14 +63,14 @@ describe("Update User Usecase", () => {
 		);
 	});
 
-	// test("Should throw if FindUserByEmail returns null", async () => {
-	// 	const { sut, findUserByEmailRepositoryStub } = makeSut();
-	// 	jest.spyOn(findUserByEmailRepositoryStub, "findByEmail").mockReturnValueOnce(
-	// 		new Promise((resolve) => resolve(null))
-	// 	);
-	// 	const promise = sut.update("email_valido@mail.com", makeFakeUpdateUserModel());
-	// 	await expect(promise).rejects.toThrow();
-	// });
+	test("Should throw if FindUserByEmail returns null", async () => {
+		const { sut, findUserByEmailRepositoryStub } = makeSut();
+		jest.spyOn(findUserByEmailRepositoryStub, "findByEmail").mockReturnValueOnce(
+			new Promise((resolve) => resolve(null))
+		);
+		const promise = sut.update("email_valido@mail.com", makeFakeUpdateUserModel());
+		await expect(promise).rejects.toThrow();
+	});
 
 	// test("Should call DeleteUserRepository with correct email", async () => {
 	// 	const { sut, deleteUserRepositoryStub } = makeSut();
