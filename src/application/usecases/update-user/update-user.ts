@@ -23,16 +23,6 @@ export class UpdateUser implements IUpdateUser {
 			throw new Error("Não foi encontrado nenhum usuário com o email informado");
 		}
 
-		await this.updateUserRepository.update(email, createUserData);
-
-		return {
-			id: "",
-			CPF: "",
-			nome: "",
-			email: "",
-			sexo: "Feminino",
-			telefone: "",
-			dataNascimento: new Date(),
-		};
+		return await this.updateUserRepository.update(email, createUserData);
 	}
 }
