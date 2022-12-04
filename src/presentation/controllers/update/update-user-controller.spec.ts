@@ -127,19 +127,19 @@ describe("Update User Controller", () => {
 		expect(httpResponse).toEqual(badRequest(new MissingParamError("CPF")));
 	});
 
-	// test("Should return 400 if no email is provided", async () => {
-	// 	const { sut } = makeSut();
-	// 	const httpResponse = await sut.handle({
-	// 		body: {
-	// 			nome: "nome_valido",
-	// 			CPF: "CPF_valido",
-	// 			telefone: "telefone_valido",
-	// 			sexo: "Masculino",
-	// 			dataNascimento: "15/10/1980",
-	// 		},
-	// 	});
-	// 	expect(httpResponse).toEqual(badRequest(new MissingParamError("email")));
-	// });
+	test("Should return 400 if no email is provided", async () => {
+		const { sut } = makeSut();
+		const httpResponse = await sut.handle({
+			body: {
+				nome: "nome_alterado",
+				CPF: "CPF_alterado",
+				telefone: "telefone_alterado",
+				sexo: "Outro",
+				dataNascimento: "15/10/1985",
+			},
+		});
+		expect(httpResponse).toEqual(badRequest(new MissingParamError("email")));
+	});
 
 	// test("Should return 400 if no telephone is provided", async () => {
 	// 	const { sut } = makeSut();
