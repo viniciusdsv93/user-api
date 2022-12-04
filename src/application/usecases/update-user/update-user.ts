@@ -11,7 +11,12 @@ export class UpdateUser implements IUpdateUser {
 	}
 
 	async update(email: string, createUserData: CreateUserModel): Promise<UserModel> {
-		await this.findUserByEmailRepository.findByEmail(email);
+		const foundUser = await this.findUserByEmailRepository.findByEmail(email);
+
+		if (!foundUser) {
+			throw new Error("Não foi encontrado nenhum usuário com o email informado");
+		}
+
 		return {
 			id: "",
 			CPF: "",
