@@ -51,6 +51,15 @@ describe("Get User Usecase", () => {
 		);
 	});
 
+	test("Should throw if FindUserByEmailRepository throws", async () => {
+		const { sut, findUserByEmailRepositoryStub } = makeSut();
+		jest.spyOn(findUserByEmailRepositoryStub, "findByEmail").mockReturnValueOnce(
+			new Promise((resolve, reject) => reject(new Error()))
+		);
+		const promise = sut.get("email_valido@mail.com");
+		await expect(promise).rejects.toThrow();
+	});
+
 	test("Should return null if FindUserByEmailRepository returns null", async () => {
 		const { sut, findUserByEmailRepositoryStub } = makeSut();
 		jest.spyOn(findUserByEmailRepositoryStub, "findByEmail").mockReturnValueOnce(
