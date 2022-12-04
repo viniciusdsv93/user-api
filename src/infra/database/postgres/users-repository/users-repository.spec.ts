@@ -86,4 +86,17 @@ describe("Prisma Users Repository", () => {
 		const resultAfterDelete = await sut.findByEmail("jorge@mail.com");
 		expect(resultAfterDelete).toBeNull();
 	});
+
+	test("Should throw on update failure", async () => {
+		const sut = new UsersPrismaRepository();
+		const promise = sut.update("jorge@mail.com", {
+			nome: "Jorge Alterado",
+			CPF: "55555555555",
+			email: "jorge_alterado@mail.com",
+			telefone: "55555555",
+			sexo: "Outro",
+			dataNascimento: "15/10/1985",
+		});
+		await expect(promise).rejects.toThrow();
+	});
 });
