@@ -38,6 +38,19 @@ export class UpdateUserController implements IController {
 			}
 		}
 
+		if (
+			httpRequest.body["sexo"] !== "Masculino" &&
+			httpRequest.body["sexo"] !== "Feminino" &&
+			httpRequest.body["sexo"] !== "Outro"
+		) {
+			return badRequest(
+				new InvalidParamError(
+					"sexo",
+					"O sexo informado é inválido. As opções são: Masculino, Feminino ou Outro"
+				)
+			);
+		}
+
 		return ok("");
 	}
 }
