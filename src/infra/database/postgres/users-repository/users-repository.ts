@@ -48,7 +48,7 @@ export class UsersPrismaRepository
 	async delete(email: string): Promise<void> {
 		await prismaClient.user.delete({
 			where: {
-				email,
+				email: email,
 			},
 		});
 	}
