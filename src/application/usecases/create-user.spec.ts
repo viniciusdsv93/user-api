@@ -111,6 +111,15 @@ describe("Create User Usecase", () => {
 		expect(findUserByCPFRepositorySpy).toHaveBeenCalledWith("CPF_valido");
 	});
 
+	test("Should throw if FindUserByCPF finds an user", async () => {
+		const { sut, findUserByCPFRepositoryStub } = makeSut();
+		jest.spyOn(findUserByCPFRepositoryStub, "findByCPF").mockReturnValueOnce(
+			new Promise((resolve) => resolve(makeFakeUserModel()))
+		);
+		const promise = sut.create(makeFakeCreateUserModel());
+		await expect(promise).rejects.toThrow();
+	});
+
 	test("Should call AddUserRepository with the correct values", async () => {
 		const { sut, addUserRepositoryStub } = makeSut();
 		const addUserRepositorySpy = jest.spyOn(addUserRepositoryStub, "add");
