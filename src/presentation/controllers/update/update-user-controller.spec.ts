@@ -263,9 +263,9 @@ describe("Update User Controller", () => {
 		expect(httpResponse).toEqual(serverError(new Error()));
 	});
 
-	// test("Should return 204 if DeleteUser usecase succeeds", async () => {
-	// 	const { sut } = makeSut();
-	// 	const httpResponse = await sut.handle(makeFakeEmailRequest());
-	// 	expect(httpResponse).toEqual(noContent());
-	// });
+	test("Should return 204 if UpdateUser usecase succeeds", async () => {
+		const { sut } = makeSut();
+		const httpResponse = await sut.handle(makeFakeUpdateRequest());
+		expect(httpResponse).toEqual(noContent());
+	});
 });
