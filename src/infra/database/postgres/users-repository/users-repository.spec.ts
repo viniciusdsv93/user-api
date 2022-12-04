@@ -64,4 +64,10 @@ describe("Prisma Users Repository", () => {
 		expect(result).toHaveProperty("sexo", "Masculino");
 		expect(result).toHaveProperty("dataNascimento", new Date(1980, 10 - 1, 15));
 	});
+
+	test("Should return null on findByCPF failure", async () => {
+		const sut = new UsersPrismaRepository();
+		const result = await sut.findByCPF("44444444444");
+		expect(result).toBeNull();
+	});
 });
