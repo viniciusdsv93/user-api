@@ -14,8 +14,14 @@ model User {
   CPF             String    @unique
   email           String    @unique
   telefone        String
-  sexo            String
+  sexo            Gender
   dataNascimento  DateTime
 
   @@map("usuarios")
+}
+
+enum Gender {
+  Masculino
+  Feminino
+  Outro
 }
