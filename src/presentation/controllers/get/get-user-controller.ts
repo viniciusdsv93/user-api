@@ -1,7 +1,7 @@
 import { IGetUser } from "../../../domain/usecases/get-user";
 import { InvalidParamError } from "../../errors/invalid-param-error";
 import { MissingParamError } from "../../errors/missing-param-error";
-import { badRequest, ok, serverError } from "../../helpers/http";
+import { badRequest, notFound, ok, serverError } from "../../helpers/http";
 import { IController } from "../../protocols/controller";
 import { HttpRequest, HttpResponse } from "../../protocols/http";
 
@@ -30,7 +30,7 @@ export class GetUserController implements IController {
 				return ok(foundUser);
 			}
 
-			return ok("");
+			return notFound();
 		} catch (error) {
 			return serverError(error as Error);
 		}
