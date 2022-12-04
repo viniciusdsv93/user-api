@@ -11,7 +11,7 @@ const makeFakeRequest = (): HttpRequest => {
 		body: {
 			nome: "nome_valido",
 			CPF: "CPF_valido",
-			email: "email_valido",
+			email: "email_valido@mail.com",
 			telefone: "telefone_valido",
 			sexo: "Masculino",
 			dataNascimento: "15/10/1980",
@@ -24,7 +24,7 @@ const makeFakeUserModel = (): UserModel => {
 		id: "id_valido",
 		nome: "nome_valido",
 		CPF: "CPF_valido",
-		email: "email_valido",
+		email: "email_valido@mail.com",
 		telefone: "telefone_valido",
 		sexo: "Masculino",
 		dataNascimento: new Date(1980, 10 - 1, 15),
@@ -56,7 +56,7 @@ describe("Create User Controller", () => {
 		const httpResponse = await sut.handle({
 			body: {
 				CPF: "CPF_valido",
-				email: "email_valido",
+				email: "email_valido@mail.com",
 				telefone: "telefone_valido",
 				sexo: "Masculino",
 				dataNascimento: "15/10/1980",
@@ -70,7 +70,7 @@ describe("Create User Controller", () => {
 		const httpResponse = await sut.handle({
 			body: {
 				nome: "nome_valido",
-				email: "email_valido",
+				email: "email_valido@mail.com",
 				telefone: "telefone_valido",
 				sexo: "Masculino",
 				dataNascimento: "15/10/1980",
@@ -99,7 +99,7 @@ describe("Create User Controller", () => {
 			body: {
 				nome: "nome_valido",
 				CPF: "CPF_valido",
-				email: "email_valido",
+				email: "email_valido@mail.com",
 				sexo: "Masculino",
 				dataNascimento: "15/10/1980",
 			},
@@ -113,7 +113,7 @@ describe("Create User Controller", () => {
 			body: {
 				nome: "nome_valido",
 				CPF: "CPF_valido",
-				email: "email_valido",
+				email: "email_valido@mail.com",
 				telefone: "telefone_valido",
 				dataNascimento: "15/10/1980",
 			},
@@ -127,7 +127,7 @@ describe("Create User Controller", () => {
 			body: {
 				nome: "nome_valido",
 				CPF: "CPF_valido",
-				email: "email_valido",
+				email: "email_valido@mail.com",
 				telefone: "telefone_valido",
 				sexo: "Masculino",
 			},
@@ -141,7 +141,7 @@ describe("Create User Controller", () => {
 			body: {
 				nome: "nome_valido",
 				CPF: "CPF_valido",
-				email: "email_valido",
+				email: "email_valido@mail.com",
 				telefone: "telefone_valido",
 				sexo: "sexo_invalido",
 				dataNascimento: "15/10/1980",
@@ -154,6 +154,23 @@ describe("Create User Controller", () => {
 					"O sexo informado é inválido. As opções são: Masculino, Feminino ou Outro"
 				)
 			)
+		);
+	});
+
+	test("Should return 400 if an invalid email is provided", async () => {
+		const { sut } = makeSut();
+		const httpResponse = await sut.handle({
+			body: {
+				nome: "nome_valido",
+				CPF: "CPF_valido",
+				email: "email_invalido",
+				telefone: "telefone_valido",
+				sexo: "Masculino",
+				dataNascimento: "15/10/1980",
+			},
+		});
+		expect(httpResponse).toEqual(
+			badRequest(new InvalidParamError("email", "O email informado é inválido"))
 		);
 	});
 
