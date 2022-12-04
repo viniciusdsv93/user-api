@@ -60,6 +60,8 @@ export class UsersPrismaRepository
 		createUserData: CreateUserModel
 	): Promise<UserModel> {
 		const { nome, CPF, email, telefone, sexo, dataNascimento } = createUserData;
+		const [day, month, year] = dataNascimento.split("/");
+		const formattedDate = new Date(Number(year), Number(month) - 1, Number(day));
 		return await prismaClient.user.update({
 			where: {
 				email: paramsEmail,
@@ -70,7 +72,7 @@ export class UsersPrismaRepository
 				email,
 				telefone,
 				sexo,
-				dataNascimento,
+				dataNascimento: formattedDate,
 			},
 		});
 	}
