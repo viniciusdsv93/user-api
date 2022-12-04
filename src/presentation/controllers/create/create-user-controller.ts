@@ -1,7 +1,7 @@
 import { ICreateUser } from "../../../domain/usecases/create-user";
 import { InvalidParamError } from "../../errors/invalid-param-error";
 import { MissingParamError } from "../../errors/missing-param-error";
-import { badRequest, ok, serverError } from "../../helpers/http";
+import { badRequest, created, ok, serverError } from "../../helpers/http";
 import { IController } from "../../protocols/controller";
 import { HttpRequest, HttpResponse } from "../../protocols/http";
 
@@ -42,9 +42,9 @@ export class CreateUserController implements IController {
 				);
 			}
 
-			await this.createUser.create(httpRequest.body);
+			const createdUserData = await this.createUser.create(httpRequest.body);
 
-			return ok("");
+			return created(createdUserData);
 		} catch (error) {
 			return serverError(error as Error);
 		}
