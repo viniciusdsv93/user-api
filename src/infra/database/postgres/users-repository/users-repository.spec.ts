@@ -11,6 +11,13 @@ describe("Prisma Users Repository", () => {
 			sexo: "Masculino",
 			dataNascimento: "15/10/1980",
 		});
-		expect(response).toBe("");
+		expect(response).toBeTruthy();
+		expect(response).toHaveProperty("id");
+		expect(response).toHaveProperty("nome", "Jorge");
+		expect(response).toHaveProperty("CPF", "44444444444");
+		expect(response).toHaveProperty("email", "jorge@mail.com");
+		expect(response).toHaveProperty("telefone", "44444444");
+		expect(response).toHaveProperty("sexo", "Masculino");
+		expect(response).toHaveProperty("dataNascimento", new Date(1980, 10 - 1, 15));
 	});
 });
