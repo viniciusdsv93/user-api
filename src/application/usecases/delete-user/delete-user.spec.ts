@@ -4,6 +4,15 @@ import { IDeleteUserRepository } from "../../protocols/delete-user-repository";
 import { IFindUserByEmailRepository } from "../../protocols/find-by-email-repository";
 import { DeleteUser } from "./delete-user";
 
+const makeDeleteUserRepositoryStub = (): IDeleteUserRepository => {
+	class DeleteUserRepositoryStub implements IDeleteUserRepository {
+		async delete(email: string): Promise<void> {
+			return new Promise((resolve) => resolve());
+		}
+	}
+	return new DeleteUserRepositoryStub();
+};
+
 const makeFakeUserModel = (): UserModel => {
 	return {
 		id: "id_valido",
@@ -23,12 +32,7 @@ type SutTypes = {
 };
 
 const makeSut = (): SutTypes => {
-	class DeleteUserRepositoryStub implements IDeleteUserRepository {
-		async delete(email: string): Promise<void> {
-			return new Promise((resolve) => resolve());
-		}
-	}
-	const deleteUserRepositoryStub = new DeleteUserRepositoryStub();
+	const deleteUserRepositoryStub = makeDeleteUserRepositoryStub();
 	class FindUserByEmailRepositoryStub implements IFindUserByEmailRepository {
 		async findByEmail(email: string): Promise<UserModel | null> {
 			return new Promise((resolve) => resolve(makeFakeUserModel()));
