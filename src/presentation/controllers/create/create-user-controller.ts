@@ -35,7 +35,10 @@ export class CreateUserController implements IController {
 				httpRequest.body["sexo"] !== "Outro"
 			) {
 				return badRequest(
-					new InvalidParamError("sexo", "O sexo informado é inválido")
+					new InvalidParamError(
+						"sexo",
+						"O sexo informado é inválido. As opções são: Masculino, Feminino ou Outro"
+					)
 				);
 			}
 
