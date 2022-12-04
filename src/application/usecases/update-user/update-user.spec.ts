@@ -107,12 +107,12 @@ describe("Update User Usecase", () => {
 		);
 	});
 
-	// test("Should throw if DeleteUserRepository throws", async () => {
-	// 	const { sut, deleteUserRepositoryStub } = makeSut();
-	// 	jest.spyOn(deleteUserRepositoryStub, "delete").mockReturnValueOnce(
-	// 		new Promise((resolve, reject) => reject(new Error()))
-	// 	);
-	// 	const promise = sut.delete("email_valido@mail.com");
-	// 	await expect(promise).rejects.toThrow();
-	// });
+	test("Should throw if UpdateUserRepository throws", async () => {
+		const { sut, updateUserRepositoryStub } = makeSut();
+		jest.spyOn(updateUserRepositoryStub, "update").mockReturnValueOnce(
+			new Promise((resolve, reject) => reject(new Error()))
+		);
+		const promise = sut.update("email_valido@mail.com", makeFakeUpdateUserModel());
+		await expect(promise).rejects.toThrow();
+	});
 });
