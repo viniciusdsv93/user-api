@@ -42,6 +42,12 @@ export class CreateUserController implements IController {
 				);
 			}
 
+			if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(httpRequest.body["email"])) {
+				return badRequest(
+					new InvalidParamError("email", "O email informado é inválido")
+				);
+			}
+
 			const createdUserData = await this.createUser.create(httpRequest.body);
 
 			return created(createdUserData);
