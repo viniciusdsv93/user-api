@@ -13,6 +13,15 @@ const makeDeleteUserRepositoryStub = (): IDeleteUserRepository => {
 	return new DeleteUserRepositoryStub();
 };
 
+const makeFindUserByEmailRepositoryStub = (): IFindUserByEmailRepository => {
+	class FindUserByEmailRepositoryStub implements IFindUserByEmailRepository {
+		async findByEmail(email: string): Promise<UserModel | null> {
+			return new Promise((resolve) => resolve(makeFakeUserModel()));
+		}
+	}
+	return new FindUserByEmailRepositoryStub();
+};
+
 const makeFakeUserModel = (): UserModel => {
 	return {
 		id: "id_valido",
@@ -33,12 +42,7 @@ type SutTypes = {
 
 const makeSut = (): SutTypes => {
 	const deleteUserRepositoryStub = makeDeleteUserRepositoryStub();
-	class FindUserByEmailRepositoryStub implements IFindUserByEmailRepository {
-		async findByEmail(email: string): Promise<UserModel | null> {
-			return new Promise((resolve) => resolve(makeFakeUserModel()));
-		}
-	}
-	const findUserByEmailRepositoryStub = new FindUserByEmailRepositoryStub();
+	const findUserByEmailRepositoryStub = makeFindUserByEmailRepositoryStub();
 	const sut = new DeleteUser(findUserByEmailRepositoryStub, deleteUserRepositoryStub);
 	return {
 		sut,
