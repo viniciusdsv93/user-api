@@ -1,7 +1,7 @@
 import { IDeleteUser } from "../../../domain/usecases/delete-user";
 import { InvalidParamError } from "../../errors/invalid-param-error";
 import { MissingParamError } from "../../errors/missing-param-error";
-import { badRequest, ok, serverError } from "../../helpers/http";
+import { badRequest, noContent, ok, serverError } from "../../helpers/http";
 import { IController } from "../../protocols/controller";
 import { HttpRequest, HttpResponse } from "../../protocols/http";
 
@@ -26,7 +26,7 @@ export class DeleteUserController implements IController {
 
 			await this.deleteUser.delete(httpRequest.params.email);
 
-			return ok("");
+			return noContent();
 		} catch (error) {
 			return serverError(error as Error);
 		}
