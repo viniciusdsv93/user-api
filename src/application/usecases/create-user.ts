@@ -28,7 +28,13 @@ export class CreateUser implements ICreateUser {
 			throw new Error("Já existe um usuário cadastrado com este email");
 		}
 
-		await this.findUserByCPFRepository.findByCPF(createUserData.CPF);
+		const userExistsWithCPF = await this.findUserByCPFRepository.findByCPF(
+			createUserData.CPF
+		);
+
+		if (userExistsWithCPF) {
+			throw new Error("Já existe um usuário cadastrado com este CPF");
+		}
 
 		const result = await this.addUserRepository.add(createUserData);
 		return result;
