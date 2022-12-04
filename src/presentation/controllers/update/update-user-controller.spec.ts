@@ -240,19 +240,19 @@ describe("Update User Controller", () => {
 		);
 	});
 
-	// test("Should call UpdateUser usecase with correct values", async () => {
-	// 	const { sut, updateUserStub } = makeSut();
-	// 	const updateUserSpy = jest.spyOn(updateUserStub, "update");
-	// 	await sut.handle(makeFakeUpdateRequest());
-	// 	expect(updateUserSpy).toHaveBeenCalledWith("email_valido@mail.com", {
-	// 		nome: "nome_alterado",
-	// 		CPF: "CPF_alterado",
-	// 		email: "email_alterado@mail.com",
-	// 		telefone: "telefone_alterado",
-	// 		sexo: "Outro",
-	// 		dataNascimento: "15/10/1985",
-	// 	});
-	// });
+	test("Should call UpdateUser usecase with correct values", async () => {
+		const { sut, updateUserStub } = makeSut();
+		const updateUserSpy = jest.spyOn(updateUserStub, "update");
+		await sut.handle(makeFakeUpdateRequest());
+		expect(updateUserSpy).toHaveBeenCalledWith("email_valido@mail.com", {
+			nome: "nome_alterado",
+			CPF: "CPF_alterado",
+			email: "email_alterado@mail.com",
+			telefone: "telefone_alterado",
+			sexo: "Outro",
+			dataNascimento: "15/10/1985",
+		});
+	});
 
 	// test("Should return 500 if DeleteUser usecase throws", async () => {
 	// 	const { sut, deleteUserStub } = makeSut();
