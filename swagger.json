@@ -1,8 +1,8 @@
 {
 	"openapi": "3.0.0",
 	"info": {
-		"title": "API de criação e gerenciamento de contas e transações",
-		"description": "Esta API destina-se ao controle de contas de usuários e suas transações, com as opções de cadastro, login, consultar saldo, realizar transação e consultar transações",
+		"title": "API de cadastro e gerenciamento de usuários",
+		"description": "Esta API destina-se ao controle de usuários, com as opções de consultar usuário pelo email, cadastrar novo usuário, excluir usuário ou atualizar dados de usuário",
 		"contact": {
 			"name": "Suporte",
 			"email": "viniciusdsv93@gmail.com"
@@ -10,25 +10,37 @@
 		"version": "1.0.0"
 	},
 	"paths": {
-		"/register": {
+		"/create": {
 			"post": {
-				"summary": "Cadastra um(a) usuário(a) e gera automaticamente uma conta vinculada a ele(a)",
-				"tags": ["Login"],
+				"summary": "Cadastra um(a) usuário(a)",
+				"tags": ["Cadastrar"],
 				"requestBody": {
 					"content": {
 						"application/json": {
 							"schema": {
                 "type": "object",
 								"properties": {
-									"username": {
+									"nome": {
 										"type": "string",
                     "required": true
 									},
-                  "password": {
+                  "CPF": {
 										"type": "string",
                     "required": true
 									},
-                  "passwordConfirmation": {
+                  "email": {
+										"type": "string",
+                    "required": true
+									},
+                  "telefone": {
+										"type": "string",
+                    "required": true
+									},
+                  "sexo": {
+										"type": "string",
+                    "required": true
+									},
+                  "dataNascimento": {
 										"type": "string",
                     "required": true
 									}
@@ -53,9 +65,24 @@
 										"id": {
 											"type": "string"
 										},
-										"username": {
-											"type": "string"
-										}
+                    "nome": {
+                      "type": "string"
+                    },
+                    "CPF": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "telefone": {
+                      "type": "string"
+                    },
+                    "sexo": {
+                      "type": "string"
+                    },
+                    "dataNascimento": {
+                      "type": "string"
+                    }
 									}
 								}
 							}
@@ -64,116 +91,22 @@
 				}
 			}
 		},
-    "/login": {
-			"post": {
-				"summary": "Faz o login de um(a) usuário(a) e retorna um token JWT em caso de sucesso",
-				"tags": ["Login"],
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-                "type": "object",
-								"properties": {
-									"username": {
-										"type": "string",
-                    "required": true
-									},
-                  "password": {
-										"type": "string",
-                    "required": true
-									}
-								}
-							}
-						}
-					}
-				},
-				"responses": {
-					"400": {
-						"description": "Campo obrigatório não informado"
-					},
-          "401": {
-						"description": "Não autorizado"
-					},
-          "500": {
-						"description": "Erro interno do servidor"
-					},
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {
-										"accessToken": {
-											"type": "string"
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-    "/balance": {
+    "/get/{email}": {
 			"get": {
-				"summary": "Retorna o saldo de um(a) usuário(a) caso o token fornecido seja validado",
-				"tags": ["Saldo"],
+				"summary": "Consulta os dados de um usuário pelo email",
+				"tags": ["Consultar"],
+				"parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "description": "email do usuário",
+            "required": true,
+            "type": "string"
+          }
+        ],
 				"responses": {
 					"400": {
-						"description": "Campo obrigatório não informado"
-					},
-          "401": {
-						"description": "Não autorizado"
-					},
-          "500": {
-						"description": "Erro interno do servidor"
-					},
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {
-										"balance": {
-											"type": "number"
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-    "/transaction": {
-			"post": {
-				"summary": "Realiza uma transação especificando a conta destinatária e o valor",
-				"tags": ["Transações"],
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-                "type": "object",
-								"properties": {
-									"creditedUsername": {
-										"type": "string",
-                    "required": true
-									},
-                  "value": {
-										"type": "number",
-                    "required": true
-									}
-								}
-							}
-						}
-					}
-				},
-				"responses": {
-					"400": {
-						"description": "Campo obrigatório não informado"
-					},
-          "401": {
-						"description": "Não autorizado"
+						"description": "Campo obrigatório não informado ou parâmetro inválido"
 					},
           "500": {
 						"description": "Erro interno do servidor"
@@ -187,83 +120,115 @@
 										"id": {
 											"type": "string"
 										},
-										"debitedAccountId": {
-											"type": "string"
-										},
-                    "creditedAccountId": {
-											"type": "string"
-										},
-                    "value": {
-											"type": "number"
-										},
-                    "createdAt": {
-											"type": "string"
-										}
+                    "nome": {
+                      "type": "string"
+                    },
+                    "CPF": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "telefone": {
+                      "type": "string"
+                    },
+                    "sexo": {
+                      "type": "string"
+                    },
+                    "dataNascimento": {
+                      "type": "string"
+                    }
 									}
 								}
 							}
 						}
 					}
 				}
-			},
-      "get": {
-				"summary": "Retorna as transações do(a) usuário(a) de acordo com filtros opcionais fornecidos caso o token seja validado",
-				"tags": ["Transações"],
-        "parameters": [
+			}
+		},
+    "/delete/{email}": {
+			"delete": {
+				"summary": "Deleta um usuário pelo email",
+				"tags": ["Deletar"],
+				"parameters": [
           {
-            "name": "date",
-            "in": "query",
-            "description": "data das transações",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "type",
-            "in": "query",
-            "description": "tipo ('check-in' ou 'check-out') das transações",
-            "required": false,
+            "name": "email",
+            "in": "path",
+            "description": "email do usuário",
+            "required": true,
             "type": "string"
           }
         ],
 				"responses": {
 					"400": {
-						"description": "Parâmetro inválido"
-					},
-          "401": {
-						"description": "Não autorizado"
+						"description": "Campo obrigatório não informado ou parâmetro inválido"
 					},
           "500": {
 						"description": "Erro interno do servidor"
 					},
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "debitedAccountId": {
-                        "type": "string"
-                      },
-                      "creditedAccountId": {
-                        "type": "string"
-                      },
-                      "value": {
-                        "type": "number"
-                      },
-                      "createdAt": {
-                        "type": "string"
-                      }
-                    }
-                  }
+					"201": {
+						"description": "NO CONTENT"
+					}
+				}
+			}
+		},
+    "/update/{email}": {
+			"put": {
+				"summary": "Altera os dados um usuário pelo email",
+				"tags": ["Atualizar"],
+				"parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "description": "email do usuário",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+                "type": "object",
+								"properties": {
+									"nome": {
+										"type": "string",
+                    "required": true
+									},
+                  "CPF": {
+										"type": "string",
+                    "required": true
+									},
+                  "email": {
+										"type": "string",
+                    "required": true
+									},
+                  "telefone": {
+										"type": "string",
+                    "required": true
+									},
+                  "sexo": {
+										"type": "string",
+                    "required": true
+									},
+                  "dataNascimento": {
+										"type": "string",
+                    "required": true
+									}
 								}
 							}
 						}
+					}
+				},
+				"responses": {
+					"400": {
+						"description": "Campo obrigatório não informado ou parâmetro inválido"
+					},
+          "500": {
+						"description": "Erro interno do servidor"
+					},
+					"201": {
+						"description": "NO CONTENT"
 					}
 				}
 			}
