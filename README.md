@@ -23,8 +23,6 @@ Caso algum dos parâmetros acima não seja fornecido, é retornada uma resposta 
 
 Além disso, é preciso que o usuário forneça um "email" e um "CPF" que não estejam em uso, caso contrário será retornado um erro informando que o valor já está em uso por outro usuário.
 
-O campo "passwordConfirmation" deve ser o mesmo do campo "password". Se alguma dessas exigências não for observada, é retornada uma resposta 400 BAD REQUEST (InvalidParamError).
-
 Em caso de sucesso, é retornada uma resposta 201 CREATED com os dados do usuário, incluindo ID, no corpo da resposta.
 
 Com o endpoint "/get/:email", utilizando-se o método HTTP GET, o usuário deve fornecer na URL o email.
